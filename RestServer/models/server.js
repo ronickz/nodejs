@@ -1,10 +1,15 @@
 const express = require('express')
+const cors = require('cors')
+const routerUsuario = require('../routes/usuarios')
 
 
 class Server {
     constructor(){
         this.app = express()
         this.port = process.env.PORT
+        this.usuariospath = '/api/usuarios'
+
+
 
         // Middlewares
 
@@ -15,31 +20,23 @@ class Server {
     }
 
     middlewares(){
+
+        //Corse
+
+        this.app.use(cors())
+
+        //Lectura y parseo
+
+        this.app.use(express.json())
+
         //Directorio publico
         this.app.use(express.static('public'))
     }
 
     routes(){
-        this.app.get('/api',(req,res)=>{
-            res.status(403).json({
-                ok:true,
-                msg: 'Get API'
-            })
-        })
 
-        this.app.put('/api',(req,res)=>{
-            res.status(403).json({
-                ok:true,
-                msg: 'Get API'
-            })
-        })
+        this.app.use(this.usuariospath,routerUsuario)
 
-        this.app.post('/api',(req,res)=>{
-            res.status(403).json({
-                ok:true,
-                msg: 'Get API'
-            })
-        })
     }
 
     listen(){
